@@ -14,7 +14,7 @@ def write_record(dcity, acity, email, price, date):
     # 先假设是新记录
     newrecord = True
     filename = "notification" + str(datetime.date.today()) + ".log"
-    with open(filename, "r+") as f:
+    with open(filename, "r+", encoding='utf-8') as f:
         while True:
             fp = f.tell()
             line = f.readline()
@@ -31,6 +31,8 @@ def write_record(dcity, acity, email, price, date):
                                     # 通知次数小于等于3次，修改通知次数，进行通知
                                     f.seek(fp)
                                     now = time.strftime("%H:%M:%S", time.localtime())
+                                    print("[" + now + "] " + dcity + "-" + acity + " " + email + " " + str(price) + \
+                                            " " + date + " " + str(int(line.split(' ')[5]) + 1))
                                     f.write("[" + now + "] " + dcity + "-" + acity + " " + email + " " + str(price) + \
                                             " " + date + " " + str(int(line.split(' ')[5]) + 1) + "\n")
                                     # todo: 通知
@@ -42,9 +44,9 @@ def write_record(dcity, acity, email, price, date):
         return False
     else:
         # 增加记录
-        with open(filename, "a") as f:
-            #print(dcity + "-" + acity + " " + email + " " + str(price) + " " + date + " 1\n")
+        with open(filename, "a", encoding='utf-8') as f:
             now = time.strftime("%H:%M:%S", time.localtime())
+            print("[" + now + "] " + dcity + "-" + acity + " " + email + " " + str(price) + " " + date + " 1")
             f.write("[" + now + "] " + dcity + "-" + acity + " " + email + " " + str(price) + " " + date + " 1\n")
 
 
@@ -114,7 +116,7 @@ if __name__ == "__main__":
     # 创建日志文件
     filename = "notification" + str(datetime.date.today()) + ".log"
     if not os.path.isfile(filename):
-        with open(filename, 'a'):
+        with open(filename, 'a', encoding='utf-8'):
             print('日志文件%s' % filename)
 
     print('从%s到%s' % (fcity, tcity))
